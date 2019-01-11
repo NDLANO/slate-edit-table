@@ -5,7 +5,7 @@ export default function(editor) {
         'cell',
         el => el.key === 'table',
     );
-    const position = editor.getPositionByKey(table, 'cell');
+    const position = editor.getTablePositionByKey(table, 'cell');
 
     expect(position.getWidth()).toEqual(3);
     expect(position.getHeight()).toEqual(3);

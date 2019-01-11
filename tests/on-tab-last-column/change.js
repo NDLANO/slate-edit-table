@@ -4,7 +4,7 @@ export default function(editor) {
     const cursorBlock = editor.value.document.getDescendant('anchor');
     editor.moveToRangeOfNode(cursorBlock);
 
-    const initialPosition = editor.getPosition(editor.value);
+    const initialPosition = editor.getTablePosition(editor.value);
 
     editor.run('onKeyDown',
         {
@@ -15,7 +15,7 @@ export default function(editor) {
         editor,
     );
 
-    const position = editor.getPosition(editor.value);
+    const position = editor.getTablePosition(editor.value);
 
     // Next row
     expect(position.getRowIndex()).toEqual(initialPosition.getRowIndex() + 1);

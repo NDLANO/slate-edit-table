@@ -14,7 +14,7 @@ export default function(editor) {
         editor,
     );
 
-    const position = editor.getPosition(editor.value);
+    const position = editor.getTablePosition(editor.value);
 
     // First row (new one)
     expect(position.getRowIndex()).toEqual(0);
