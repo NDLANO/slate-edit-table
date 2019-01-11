@@ -1257,12 +1257,12 @@ function core(optionsParam) {
         queries: {
             isSelectionInTable: _utils.isSelectionInTable.bind(null, opts),
             isSelectionOutOfTable: _utils.isSelectionOutOfTable.bind(null, opts),
-            getPosition: _utils.getPosition.bind(null, opts),
-            getPositionByKey: _utils.getPositionByKey.bind(null, opts),
-            createCell: _utils.createCell.bind(null, opts),
+            getTablePosition: _utils.getPosition.bind(null, opts),
+            getTablePositionByKey: _utils.getPositionByKey.bind(null, opts),
+            createTableCell: _utils.createCell.bind(null, opts),
             createRow: _utils.createRow.bind(null, opts),
             createTable: _utils.createTable.bind(null, opts),
-            forEachCells: _utils.forEachCells.bind(null, opts),
+            forEachTableCell: _utils.forEachCells.bind(null, opts),
             getCellsAtRow: _utils.getCellsAtRow.bind(null, opts),
             getCellsAtColumn: _utils.getCellsAtColumn.bind(null, opts),
             getCopiedFragment: _utils.getCopiedFragment.bind(null, opts)
@@ -1271,7 +1271,7 @@ function core(optionsParam) {
         commands: {
             insertTable: _changes.insertTable.bind(null, opts),
             insertTableFragmentAtRange: _changes.insertTableFragmentAtRange.bind(null, opts),
-            clearCell: _changes.clearCell.bind(null, opts),
+            clearTableCell: _changes.clearCell.bind(null, opts),
             removeRowByKey: _changes.removeRowByKey.bind(null, opts),
             removeColumnByKey: _changes.removeColumnByKey.bind(null, opts),
             removeTableByKey: _changes.removeTableByKey.bind(null, opts),
@@ -1280,8 +1280,8 @@ function core(optionsParam) {
             insertColumn: bindAndScopeChange(opts, _changes.insertColumn),
             removeColumn: bindAndScopeChange(opts, _changes.removeColumn),
             removeTable: bindAndScopeChange(opts, _changes.removeTable),
-            moveSelection: bindAndScopeChange(opts, _changes.moveSelection),
-            moveSelectionBy: bindAndScopeChange(opts, _changes.moveSelectionBy)
+            moveTableSelection: bindAndScopeChange(opts, _changes.moveSelection),
+            moveTableSelectionBy: bindAndScopeChange(opts, _changes.moveSelectionBy)
         }
     };
 }
