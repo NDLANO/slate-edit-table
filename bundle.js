@@ -2598,15 +2598,17 @@ function normalizeNode(opts) {
 
         return function () {
             editor.withoutNormalizing(function () {
-                rowsMissingColumns.forEach(function (row) {
-                    var numberOfCellsToAdd = maxColumns - countCells(row);
-                    var cells = Array.from({
-                        length: numberOfCellsToAdd
-                    }).map(function () {
-                        return (0, _utils.createCell)(opts);
-                    });
-                    cells.forEach(function (cell) {
-                        return editor.insertNodeByKey(row.key, row.nodes.size, cell);
+                editor.withoutSaving(function () {
+                    rowsMissingColumns.forEach(function (row) {
+                        var numberOfCellsToAdd = maxColumns - countCells(row);
+                        var cells = Array.from({
+                            length: numberOfCellsToAdd
+                        }).map(function () {
+                            return (0, _utils.createCell)(opts);
+                        });
+                        cells.forEach(function (cell) {
+                            return editor.insertNodeByKey(row.key, row.nodes.size, cell);
+                        });
                     });
                 });
             });
@@ -2699,8 +2701,10 @@ function onlyCellsInRow(opts, change, error) {
     });
 
     change.withoutNormalizing(function () {
-        change.insertNodeByKey(error.node.key, index, cell);
-        change.moveNodeByKey(error.child.key, cell.key, 0);
+        change.withoutSaving(function () {
+            change.insertNodeByKey(error.node.key, index, cell);
+            change.moveNodeByKey(error.child.key, cell.key, 0);
+        });
     });
 }
 
@@ -2708,7 +2712,9 @@ function onlyCellsInRow(opts, change, error) {
  * Rows can't live outside a table, if one is found then we wrap it within a table.
  */
 function rowOnlyInTable(opts, change, error) {
-    return change.wrapBlockByKey(error.node.key, opts.typeTable);
+    change.withoutSaving(function () {
+        return change.wrapBlockByKey(error.node.key, opts.typeTable);
+    });
 }
 
 /*
@@ -2716,14 +2722,15 @@ function rowOnlyInTable(opts, change, error) {
  * If they're not then we wrap them within a block with a type of opts.typeContent
  */
 function onlyBlocksInCell(opts, change, node) {
-    change.wrapBlockByKey(node.nodes.first().key, opts.typeContent);
-    var wrapper = change.value.document.getDescendant(node.key).nodes.first();
+    change.withoutSaving(function () {
+        change.wrapBlockByKey(node.nodes.first().key, opts.typeContent);
+        var wrapper = change.value.document.getDescendant(node.key).nodes.first();
 
-    // Add in the remaining items
-    node.nodes.rest().forEach(function (child, index) {
-        return change.moveNodeByKey(child.key, wrapper.key, index + 1);
+        // Add in the remaining items
+        node.nodes.rest().forEach(function (child, index) {
+            return change.moveNodeByKey(child.key, wrapper.key, index + 1);
+        });
     });
-
     return change;
 }
 
@@ -2731,7 +2738,9 @@ function onlyBlocksInCell(opts, change, node) {
  * Cells can't live outside a row, if one is found then we wrap it within a row.
  */
 function cellOnlyInRow(opts, change, error) {
-    return change.wrapBlockByKey(error.node.key, opts.typeRow);
+    change.withoutSaving(function () {
+        return change.wrapBlockByKey(error.node.key, opts.typeRow);
+    });
 }
 
 exports.default = schema;
