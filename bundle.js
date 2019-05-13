@@ -2674,12 +2674,9 @@ function schema(opts) {
                 }
             }
         }), _defineProperty(_blocks, opts.typeCell, {
-            nodes: [{ match: { object: 'block' } }],
             parent: { type: opts.typeRow },
             normalize: function normalize(change, error) {
                 switch (error.code) {
-                    case _slateSchemaViolations.CHILD_OBJECT_INVALID:
-                        return onlyBlocksInCell(opts, change, error.node);
                     case _slateSchemaViolations.PARENT_TYPE_INVALID:
                         return cellOnlyInRow(opts, change, error);
                     default:
@@ -2715,23 +2712,6 @@ function rowOnlyInTable(opts, change, error) {
     change.withoutSaving(function () {
         return change.wrapBlockByKey(error.node.key, opts.typeTable);
     });
-}
-
-/*
- * A cell's children must be "block"s.
- * If they're not then we wrap them within a block with a type of opts.typeContent
- */
-function onlyBlocksInCell(opts, change, node) {
-    change.withoutSaving(function () {
-        change.wrapBlockByKey(node.nodes.first().key, opts.typeContent);
-        var wrapper = change.value.document.getDescendant(node.key).nodes.first();
-
-        // Add in the remaining items
-        node.nodes.rest().forEach(function (child, index) {
-            return change.moveNodeByKey(child.key, wrapper.key, index + 1);
-        });
-    });
-    return change;
 }
 
 /*
