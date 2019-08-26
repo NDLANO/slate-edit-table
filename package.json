@@ -41,11 +41,10 @@
     "prettier": "^1.9.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "slate": "^0.44.9",
-    "slate-hyperprint": "^2.2.6",
-    "slate-hyperscript": "^0.11",
-    "slate-react": "^0.20",
-    "slate-simulator": "^0.4.66"
+    "slate": "^0.47.4",
+    "slate-hyperprint": "^2.3.0",
+    "slate-hyperscript": "^0.13.4",
+    "slate-react": "^0.22.4"
   },
   "scripts": {
     "build:dist": "rm -r ./dist; babel ./lib --out-dir ./dist",

@@ -1,14 +1,15 @@
 import expect from 'expect';
 
 export default function(editor) {
-    const cursorBlock = editor.value.document.getDescendant('anchor');
-    editor.moveToRangeOfNode(cursorBlock);
+    editor.focus();
+    const { value } = editor;
+    const cursorBlock = value.selection.start;
 
     editor.removeTable(editor);
-    const { value } = editor;
-    expect(value.startBlock.type).toEqual('paragraph');
-    expect(editor.value.selection.start.offset)
-        .toEqual(editor.value.startBlock.text.length)
-        .toEqual(0);
+
+    expect(value.document.getParent(cursorBlock.path).type).toEqual(
+        'paragraph',
+    );
+
     return editor;
 }

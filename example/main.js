@@ -16,10 +16,10 @@ const tablePlugin = PluginEditTable({
     typeTable: 'table',
     typeRow: 'table_row',
     typeCell: 'table_cell',
-    typeContent: 'paragraph'
+    typeContent: 'paragraph',
 });
 
-function renderNode(props) {
+function renderBlock(props, editor, next) {
     switch (props.node.type) {
         case 'table':
             return <Table {...props} />;
@@ -32,21 +32,21 @@ function renderNode(props) {
         case 'heading':
             return <h1 {...props.attributes}>{props.children}</h1>;
         default:
-            return null;
+            return next();
     }
 }
 
-const plugins = [tablePlugin, alignPlugin, { renderNode }];
+const plugins = [tablePlugin, alignPlugin, { renderBlock }];
 
 type NodeProps = {
     attributes: Object,
     children: React.Node,
-    node: Block
+    node: Block,
 };
 
 class Table extends React.Component<NodeProps> {
     static childContextTypes = {
-        isInTable: PropTypes.bool
+        isInTable: PropTypes.bool,
     };
 
     getChildContext() {
@@ -86,7 +86,7 @@ class TableCell extends React.Component<NodeProps> {
 
 class Paragraph extends React.Component<NodeProps> {
     static contextTypes = {
-        isInTable: PropTypes.bool
+        isInTable: PropTypes.bool,
     };
 
     render() {
@@ -107,7 +107,7 @@ class Example extends React.Component<*, *> {
     submitChange: Function;
     editorREF: Editor;
     state = {
-        value: INITIAL_VALUE
+        value: INITIAL_VALUE,
     };
 
     renderTableToolbar() {
@@ -147,7 +147,7 @@ class Example extends React.Component<*, *> {
 
     onChange = ({ value }) => {
         this.setState({
-            value
+            value,
         });
     };
 
@@ -184,7 +184,7 @@ class Example extends React.Component<*, *> {
     onSetAlign = (event, align) => {
         event.preventDefault();
         this.submitChange(change =>
-            alignPlugin.changes.setColumnAlign(change, align)
+            alignPlugin.changes.setColumnAlign(change, align),
         );
     };
 
